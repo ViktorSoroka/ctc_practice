@@ -58,7 +58,127 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: block;
 }
 
+/* fonts*/
+@font-face {
+  font-family: "Lato-Bold";
+  src: url('../fonts/lato-bol-webfont.eot?1416997252');
+  src: url('../fonts/lato-bol-webfont.eot?&1416997252#iefix') format('embedded-opentype'), url('../fonts/lato-bol-webfont.woff?1416997253') format('woff'), url('../fonts/lato-bol-webfont.ttf?1416997252') format('truetype'), url('../fonts/lato-bol-webfont.svg?1416997253') format('svg');
+}
+@font-face {
+  font-family: "Lato-Regular";
+  src: url('../fonts/lato-reg-webfont.eot?1416997252');
+  src: url('../fonts/lato-reg-webfont.eot?&1416997252#iefix') format('embedded-opentype'), url('../fonts/lato-reg-webfont.woff?1416997253') format('woff'), url('../fonts/lato-reg-webfont.ttf?1416997252') format('truetype'), url('../fonts/lato-reg-webfont.svg?1416997253') format('svg');
+}
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
+  min-height: 100%;
   background: #fff;
+  font-family: 'Lato-Regular', Verdana, Arial, Helvetica, sans-serif;
+}
+
+.wrapper {
+  height: 100%;
+  min-height: 100%;
+}
+
+.cus-popup {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(153, 153, 153, 0.5);
+}
+
+.cus-popup__main-holder {
+  display: block;
+  width: 870px;
+  height: 501px;
+  position: relative;
+  top: 218px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  margin: auto;
+  padding: 35px 30px 35px 40px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.cus-popup_main-holder__popup-hide-btn {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 23px;
+  top: 13px;
+  background: #919191 url(../images/img-cancel.png) center no-repeat;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.cus-popup_main-holder_product-stuff__product-view,
+.cus-popup_main-holder_product-stuff_product-view__product-location {
+  float: left;
+}
+
+.cus-popup_main-holder_product-stuff__product-view {
+  width: 25%;
+  margin-right: 5%;
+}
+
+.cus-popup_main-holder_product-stuff_product-view__product-title,
+.cus-popup_main-holder_product-stuff_product-location__product-title {
+  font-family: 'Lato-Bold', Verdana, Arial, Helvetica, sans-serif;
+  word-spacing: 2px;
+  line-height: 1.43;
+  margin-bottom: 13px;
+}
+
+.cus-popup_main-holder_product-stuff__product-view {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 2px 0;
+}
+
+.cus-popup_main-holder_product-stuff_product-view__product-code {
+  display: block;
+  font-size: 10px;
+}
+
+.cus-popup_main-holder_product-stuff_product-view_img-wrap {
+  display: block;
+  width: 100%;
+  height: 230px;
+  line-height: 230px;
+  margin: 0 auto;
+  text-align: center;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.cus-popup_main-holder_product-stuff_product-view__product-img {
+  vertical-align: middle;
+}
+
+.cus-popup_main-holder_product-stuff__product-location {
+  width: 70%;
+}
+
+.cus-popup_main-holder_product-stuff_product-view__store-location-list {
+  outline: 1px solid #ccc;
+}
+
+.cus-popup_main-holder_product-stuff_product-view__pagination-wrap {
+  display: block;
   width: 100%;
 }
