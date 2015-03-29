@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     path = require('path'),
     connect = require('gulp-connect'),
     open = require('gulp-open'),
+    uncss = require('gulp-uncss');
     compass = require('gulp-compass');
 
 gulp.task('connect', function () {
@@ -30,7 +31,11 @@ gulp.task('scssStyle', function () {
             sass: 'scss'
         }))
         .pipe(gulp.dest('./markup/css/'))
-        .pipe(connect.reload());
+        //.pipe(uncss({
+        //    html: ['../index.html']
+        //}))
+        .pipe(connect.reload())
+
 });
 
 gulp.task('url', function(){
