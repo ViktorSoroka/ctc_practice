@@ -64,7 +64,7 @@ body{
     bottom: 0;
     background: rgba(153, 153, 153, 0.5);
     }
-    .cus-popup-main-holder{
+    .cus-popup-main-wrap{
         width: $popup-width;
         margin: 0 auto;
         overflow: hidden;
@@ -73,14 +73,14 @@ body{
         padding: 35px 30px 79px 40px;
         @include box-sizing();
         }
-        .cus-popup_main-holder-chevron{
+        .cus-popup_main-wrap-chevron{
             display: inline-block;
             width: 22px;
             height: 10px;
             position: relative;
             }
-        .cus-popup_main-holder-chevron:before,
-        .cus-popup_main-holder-chevron:after{
+        .cus-popup_main-wrap-chevron:before,
+        .cus-popup_main-wrap-chevron:after{
             content: '';
             position: absolute;
             display: block;
@@ -88,15 +88,15 @@ body{
             border: 5.5px solid transparent;/*adjust size*/
             }
 /*Change four 'left' values below to rotate (top/right/bottom/left)*/
-        .cus-popup_main-holder-chevron:before{
+        .cus-popup_main-wrap-chevron:before{
             left: 8px;
             border-left-color: $primary-color;
             }
-        .cus-popup_main-holder-chevron:after{
+        .cus-popup_main-wrap-chevron:after{
             left: 5px;
             border-left-color: $primary-red-color;
             }
-        .cus-popup_main-holder-hide-btn{
+        .cus-popup_main-wrap-hide-btn{
             display: block;
             width: $close_popup_size;
             height: $close_popup_size;
@@ -117,7 +117,7 @@ body{
             margin-right: 3.8%;
             }
             .cus-popup-product-stuff-view-title,
-            .cus-popup-product-stuff-location-headline{
+            .cus-popup-product-stuff-location-title{
                 font-family: 'Lato-Bold', Verdana, Arial, Helvetica, sans-serif;
                 word-spacing: 2px;
                 line-height: 1.2;
@@ -145,7 +145,7 @@ body{
             width: 66.2%;
             float: right;
             }
-            .cus-popup-product-stuff-location-headline{
+            .cus-popup-product-stuff-location-title{
                 padding: 0 9px;
                 margin-bottom: 7px;
                 }
@@ -159,24 +159,24 @@ body{
                 word-spacing: 1px;
                 margin-bottom: 15px;
                 }
-                .cus-popup-product-stuff-store-form-container{
+                .cus-popup-product-stuff-store-form-holder{
                     display: table;
                     width: 100%;
                     }
-                    .cus-popup-product-stuff-store-form-container-row{
+                    .cus-popup-product-stuff-store-form-holder-row{
                         display: table-row;
                         }
-                    .cus-popup-product-stuff-store-form-container-search-submit-wrap{
+                    .cus-popup-product-stuff-store-form-holder-row-search-submit-wrap{
                         display: table-cell;
                         width: 1px;
                         text-align: right;
                         padding-left: 10px;
                         white-space: nowrap;
                         }
-                    .cus-popup-product-stuff-store-form-search-container-field-wrap{
+                    .cus-popup-product-stuff-store-form-search-wrap{
                         white-space: nowrap;
                         }
-                        .cus-popup-product-stuff-store-form-search-container-field-wrap-field{
+                        .cus-popup-product-stuff-store-form-search-wrap-search{
                             width: 100%;
                             padding: 3px 6px 5px;
                             display: table-cell;
@@ -184,8 +184,8 @@ body{
                             font-size: 12px;
                             border: 1px solid $light-grey-color;
                             }
-                        .cus-popup-product-stuff-store-form-container-search-submit-wrap-submit,
-                        .cus-popup_store-location-list-item-select-store-wrap-select{
+                        .cus-popup-product-stuff-store-form-holder-row-search-submit-wrap-submit,
+                        .cus-popup_store-location-list-item-btn-wrap-btn{
                             display: inline-block;
                             min-width: $store-btn_width;
                             padding: 5px 0 5px 10px;
@@ -200,10 +200,10 @@ body{
                             outline: none;
                             cursor: pointer;
                             }
-                        .cus-popup-product-stuff-store-form-container-search-submit-wrap-submit{
+                        .cus-popup-product-stuff-store-form-holder-row-search-submit-wrap-submit{
                             top: 1px;
                             }
-                        .cus-popup_store-location-list-item-select-store-wrap-select{
+                        .cus-popup_store-location-list-item-btn-wrap-btn{
                             white-space: nowrap;
                             padding-top: 4px;
                             padding-bottom: 4px;
@@ -211,10 +211,10 @@ body{
                             border: 1px solid $button-grey-color;
                             color: $dark-grey-font-color;
                             }
-                            .cus-popup_store-location-list-item-select-store-wrap-select-chevron:before{
+                            .cus-popup_store-location-list-item-btn-wrap-btn-chevron:before{
                                 border-left-color: $primary-red-color;
                                 }
-                            .cus-popup_store-location-list-item-select-store-wrap-select-chevron:after{
+                            .cus-popup_store-location-list-item-btn-wrap-btn-chevron:after{
                                 border-left-color: $primary-color;
                                 }
 
@@ -270,8 +270,8 @@ body{
                 box-sizing: border-box;
                 padding-bottom: 10px;
                 }
-                .cus-popup_store-location-list-item-check-product-in-stock-icon,
-                .cus-popup_store-location-list-item-check-product-out-stock-icon{
+                .cus-popup_store-location-list-item-check-product-in-icon,
+                .cus-popup_store-location-list-item-check-product-out-icon{
                     @include border-radius(50%);
                     text-align: center;
                     width: $product-in-out-stock-size;
@@ -286,13 +286,13 @@ body{
                     right: 0;
                     margin: auto;
                     }
-                .cus-popup_store-location-list-item-check-product-out-stock-icon{
+                .cus-popup_store-location-list-item-check-product-out-icon{
                     background-color: $primary-red-color;
                     background-image: url(../images/sprite.png);
                     background-repeat: no-repeat;
                     background-position: -5px -4px;
                     }
-                .cus-popup_store-location-list-item-check-product-delivery-state{
+                .cus-popup_store-location-list-item-check-product-supply-state{
                     display: block;
                     text-align: center;
                     font-size: 14px;
@@ -300,20 +300,20 @@ body{
                     font-weight: bold;
                     margin-top: 7px;
                     }
-                .cus-popup_store-location-list-item-check-product-delivery-info{
+                .cus-popup_store-location-list-item-check-product-supply-info{
                     display: block;
                     width: 86px;
                     font-size: 12px;
                     text-align: center;
                     margin: 0 auto;
                     }
-            .cus-popup_store-location-list-item-select-store-wrap{
+            .cus-popup_store-location-list-item-btn-wrap{
                 display: table-cell;
                 vertical-align: middle;
                 padding-right: 2.5%;
                 text-align: right;
                 }
-                .cus-popup_store-location-list-item-select-store-wrap-select{
+                .cus-popup_store-location-list-item-btn-wrap-btn{
                     display: inline-block;
                     }
     .cus-popup_pagination-list{
