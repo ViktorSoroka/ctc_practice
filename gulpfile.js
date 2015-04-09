@@ -6,7 +6,7 @@ var gulp = require('gulp'),
 
 gulp.task('connect', function () {
     connect.server({
-        root: './markup/',
+        root: '',
         port: 8000,
         livereload: true
     });
@@ -36,7 +36,7 @@ gulp.task('scssStyle', function () {
 
 gulp.task('url', function(){
     var options = {
-        url: 'http://localhost:8000/',
+        url: 'http://localhost:8000/markup',
         app: 'chrome'
     };
     gulp.src('./markup/index.html')
