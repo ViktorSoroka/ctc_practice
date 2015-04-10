@@ -67,6 +67,7 @@ body{
     .cus-popup-main-wrap{
         width: $popup-width;
         margin: 0 auto;
+        min-height: 500px;
         overflow: hidden;
         position: relative;
         background: $primary-color;
@@ -104,6 +105,10 @@ body{
             right: 23px;
             top: 13px;
             background: $button-grey-color url(../images/sprite.png) -1px 0 no-repeat;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
             @include border-radius(50%);
             }
     .cus-popup_product-stuff{
@@ -221,6 +226,7 @@ body{
     .cus-popup_store-location-list{
         display: table;
         width: 100%;
+        @include box-sizing();
         border: 1px solid $extra-light-grey-color;
         }
         .cus-popup_store-location-list-item{
@@ -229,6 +235,9 @@ body{
             height: 95px;
             padding: 10px;
             }
+        .cus-popup_store-location-list-item_highlighted {
+            background-color: #F4F4F4;
+        }
             .cus-popup_store-location-list-item-map-wrap{
                 display: table-cell;
                 width: $map-img-size;
@@ -249,8 +258,8 @@ body{
                         }
             .cus-popup_store-location-list-item-adr-wrap{
                 display: table-cell;
-                width: 34%;
-                max-width: 34%;
+                width: 165px;
+                max-width: 165px;
                 @include box-sizing();
                 padding: 20px 0 10px;
                 vertical-align: top;
@@ -265,6 +274,7 @@ body{
                     font-size: 12px;
                     }
             .cus-popup_store-location-list-item-check-product{
+                min-width: 113px;
                 display: table-cell;
                 vertical-align: middle;
                 box-sizing: border-box;
@@ -279,7 +289,11 @@ body{
                     background-color: $primary-green-color;
                     background-image: url(../images/sprite.png);
                     background-repeat: no-repeat;
-                    background-position: -24px -4px;;
+                    background-position: -25px -4px;;
+                    -webkit-background-size: auto;
+                    -moz-background-size: auto;
+                    -o-background-size: auto;
+                    background-size: auto;
                     display: block;
                     position: relative;
                     left: 0;
@@ -290,7 +304,7 @@ body{
                     background-color: $primary-red-color;
                     background-image: url(../images/sprite.png);
                     background-repeat: no-repeat;
-                    background-position: -5px -4px;
+                    background-position: -5px -5px;
                     }
                 .cus-popup_store-location-list-item-check-product-supply-state{
                     display: block;
@@ -310,7 +324,7 @@ body{
             .cus-popup_store-location-list-item-btn-wrap{
                 display: table-cell;
                 vertical-align: middle;
-                padding-right: 2.5%;
+                padding-right: 2.2%;
                 text-align: right;
                 }
                 .cus-popup_store-location-list-item-btn-wrap-btn{
@@ -318,7 +332,7 @@ body{
                     }
     .cus-popup_pagination-list{
         display: block;
-//        position: absolute;
+        position: absolute;
         list-style: none;
         bottom: 41px;
         right: 51px;
