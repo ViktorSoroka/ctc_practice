@@ -6,30 +6,30 @@ var gulp = require('gulp'),
 
 gulp.task('connect', function () {
     connect.server({
-        root: '',
+        root: './',
         port: 8000,
         livereload: true
     });
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['./markup/index.html'], ['html']);
-    gulp.watch(['./markup/scss/main.scss'], ['scssStyle', 'html']);
+    gulp.watch(['markup/index.html'], ['html']);
+    gulp.watch(['markup/scss/main.scss'], ['scssStyle', 'html']);
 });
 
 gulp.task('html', function () {
-    return gulp.src('./markup/index.html')
+    return gulp.src('markup/index.html')
         .pipe(connect.reload());
 });
 
 gulp.task('scssStyle', function () {
-    gulp.src('./markup/scss/main.scss')
+    gulp.src('markup/scss/main.scss')
         .pipe(compass({
-            project: path.join(__dirname, './markup/'),
+            project: path.join(__dirname, 'markup/'),
             css: 'css',
             sass: 'scss'
         }))
-        .pipe(gulp.dest('./markup/css/'))
+        .pipe(gulp.dest('markup/css/'))
         .pipe(connect.reload())
 
 });

@@ -1,14 +1,15 @@
 (function ($) {
     var getItemsCount = function (elem) {
-        return elem.children().length;
-        },
-        index = 1;
+            return elem.children().length;
+        };
     var methods = {
+        index: 1,
         init: function (options) {
             var opts = $.extend({
                 'stuff_to_paginate': '.cus-popup_store-location-list',
                 'items_on_page': 3
                 }, options),
+                index = 1,
                 $pages,
                 $stuffToPaginate = $(opts.stuff_to_paginate),
                 collect_paginate = this,
@@ -53,8 +54,8 @@
             });
         },
         updateIndex: function(value) {
-            index = value;
-            return index;
+            methods.index = value;
+            return methods.index;
         },
         setActive: function (e) {
             var text_link = $(e.currentTarget).text(),
