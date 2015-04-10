@@ -148,7 +148,7 @@
                 $nextPage.unbind('.pagination');
                 $prevPage.unbind('.pagination');
                 $this.removeData('pagination').hide();
-                $('.cus-popup_store-location-list').children().show();
+                $('.cus-popup_store-location-list').children().removeClass('cus-popup_store-location-list-item_highlighted').show();
             });
         }
     };
