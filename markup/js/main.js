@@ -1,5 +1,10 @@
 (function ($) {
     var index = 1,
+        namespace_pgn = '.pagination',
+        btn_pgn = 'cus-popup_pagination-list-btn',
+        btn_pgn_num = 'cus-popup_pagination-list-btn-link:not(:first):not(:last)',
+        btn_link_pgn = 'cus-popup_pagination-list-btn-link',
+        btn_link_pgn_active = 'cus-popup_pagination-list-btn-link-active',
         getIndex = function () {
             return index;
         },
@@ -19,11 +24,11 @@
         appendPaginateBtns = function ($place_append, pages_count) {
             var documentFragment = $(document.createDocumentFragment()),
                 btn = $('<li>', {
-                    'class': 'cus-popup_pagination-list-btn'
+                    'class': btn_pgn
                 }),
                 link = $('<a>', {
                     'href': '#',
-                    'class': 'cus-popup_pagination-list-btn-link'
+                    'class': btn_link_pgn
                 });
             btn.append(link);
             for (var i = 0; i < pages_count; i++) {
@@ -31,7 +36,13 @@
                 documentFragment.append(btn.clone());
             }
             $place_append.find('>li:first').after(documentFragment);
-    };
+        },
+        some = function (collect_paginate) {
+            collect_paginate.each(function (i, elem) {
+                $(elem).find('.' + btn_pgn_num).removeClass(btn_link_pgn_active);
+                $($(elem).find('.' + btn_pgn_num).get(getIndex() - 1)).addClass(btn_link_pgn_active);
+            });
+        };
     var methods = {
         init: function (options) {
             var opts = $.extend({
@@ -67,27 +78,21 @@
                     $nextPage = $this.find('.cus-popup_pagination-list-btn-link:last');
                     $prevPage = $this.find('.cus-popup_pagination-list-btn-link:first');
 
-                    $pages.bind('click.pagination', {
-                        link_active: 'cus-popup_pagination-list-btn-link-active',
+                    $pages.bind('click' + namespace_pgn, {
                         collect_paginate: collect_paginate,
-                        class_btn: '.cus-popup_pagination-list-btn-link:not(:first):not(:last)',
                         $stuffToPaginate: $stuffToPaginate,
                         items_on_page: opts.items_on_page
                     }, methods.setActive);
 
-                    $nextPage.bind('click.pagination', {
-                        link_active: 'cus-popup_pagination-list-btn-link-active',
+                    $nextPage.bind('click' + namespace_pgn, {
                         pages_count: pages_count,
                         collect_paginate: collect_paginate,
-                        class_btn: '.cus-popup_pagination-list-btn-link:not(:first):not(:last)',
                         $stuffToPaginate: $stuffToPaginate,
                         items_on_page: opts.items_on_page
                     }, methods.pgnNext);
 
-                    $prevPage.bind('click.pagination', {
-                        link_active: 'cus-popup_pagination-list-btn-link-active',
+                    $prevPage.bind('click' + namespace_pgn, {
                         collect_paginate: collect_paginate,
-                        class_btn: '.cus-popup_pagination-list-btn-link:not(:first):not(:last)',
                         $stuffToPaginate: $stuffToPaginate,
                         items_on_page: opts.items_on_page
                     }, methods.pgnPrev);
@@ -99,32 +104,23 @@
 
         setActive: function (e) {
             if ($(e.currentTarget).hasClass(e.data.link_active)) return;
-            var text_link = $(e.currentTarget).text(),
-                index = updateIndex(text_link);
-            e.data.collect_paginate.each(function (i, elem) {
-                $(elem).find(e.data.class_btn).removeClass(e.data.link_active);
-                $($(elem).find(e.data.class_btn).get(index - 1)).addClass(e.data.link_active);
-            });
+            var text_link = $(e.currentTarget).text();
+            updateIndex(text_link);
+            some(e.data.collect_paginate);
             methods.showPageItems(e.data.items_on_page, e.data.$stuffToPaginate);
         },
 
         pgnNext: function (e) {
             if (getIndex() === e.data.pages_count) return;
             increaseIndex(1);
-            e.data.collect_paginate.each(function (i, elem) {
-                $(elem).find(e.data.class_btn).removeClass(e.data.link_active);
-                $($(elem).find(e.data.class_btn).get(getIndex() - 1)).addClass(e.data.link_active);
-            });
+            some(e.data.collect_paginate);
             methods.showPageItems(e.data.items_on_page, e.data.$stuffToPaginate);
         },
 
         pgnPrev: function (e) {
             if (getIndex() === 1) return;
             decreaseIndex(1);
-            e.data.collect_paginate.each(function (i, elem) {
-                $(elem).find(e.data.class_btn).removeClass(e.data.link_active);
-                $($(elem).find(e.data.class_btn).get(getIndex() - 1)).addClass(e.data.link_active);
-            });
+            some(e.data.collect_paginate);
             methods.showPageItems(e.data.items_on_page, e.data.$stuffToPaginate);
         },
 
@@ -140,14 +136,12 @@
         destroy: function() {
             return this.each(function(){
                 var $this = $(this),
-                    $pages = $this.find('.cus-popup_pagination-list-btn-link:not(:first):not(:last)'),
                     $nextPage = $this.find('.cus-popup_pagination-list-btn-link:last'),
                     $prevPage = $this.find('.cus-popup_pagination-list-btn-link:first');
-                $($pages[0]).trigger('click');
-                $pages.unbind('.pagination');
-                $nextPage.unbind('.pagination');
-                $prevPage.unbind('.pagination');
-                $this.removeData('pagination').hide();
+                $this.find('.cus-popup_pagination-list-btn:not(:first):not(:last)').remove();
+                $nextPage.unbind(namespace_pgn);
+                $prevPage.unbind(namespace_pgn);
+                $this.removeData(namespace_pgn).hide();
                 $('.cus-popup_store-location-list').children().removeClass('cus-popup_store-location-list-item_highlighted').show();
             });
         }
