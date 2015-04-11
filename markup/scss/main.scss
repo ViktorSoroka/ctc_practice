@@ -14,6 +14,7 @@ $dark-grey-font-color: #333333;
 $light-grey-color:#A5A5A5;
 $extra-light-grey-color:#E8E8E8;
 $button-grey-color: #919191;
+$pagination-light-grey: #CBCBCB;
 $popup-width: 870px;
 $close_popup_size: 24px;
 $pagination-item-size: 24px;
@@ -367,9 +368,11 @@ body{
                     color: $dark-grey-font-color;
                     }
                     .cus-popup_pagination-list-btn-link-next-chevron-left:before{
+                      border-right-color: $pagination-light-grey;
+                    }
+                    .cus-popup_pagination-list-btn-link-next-chevron-left:before{
                         left: 5px;
                         border-left-color: transparent;
-                        border-right-color: #CBCBCB;
                         }
                     .cus-popup_pagination-list-btn-link-next-chevron-left:after{
                         left: 8px;
@@ -377,8 +380,14 @@ body{
                         border-right-color:$primary-color;
                         }
                     .cus-popup_pagination-list-btn-link-next-chevron-right:before{
-                        border-left-color: $primary-red-color;
+                        border-left-color: $pagination-light-grey;
                         }
                     .cus-popup_pagination-list-btn-link-next-chevron-right:after{
                         border-left-color: $primary-color;
                         }
+                    .cus-popup_pagination-list-btn-link-next-chevron-right:hover:before{
+                      border-left-color: $primary-red-color;
+                    }
+                    .cus-popup_pagination-list-btn-link-next-chevron-left:hover:before{
+                      border-right-color: $primary-red-color;
+                    }
