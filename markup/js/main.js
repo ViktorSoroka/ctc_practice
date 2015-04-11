@@ -15,6 +15,11 @@
         $prevPage,
         methods,
         i,
+        /**
+         * @description - for checking input value is positive integer
+         * @param value {*} - some value to check
+         * @returns {*|boolean}
+         */
         checkPositiveInteger = function (value) {
             return value && value === ~~value && value >= 0;
         },
