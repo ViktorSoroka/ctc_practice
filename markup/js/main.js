@@ -1,8 +1,12 @@
 /*global jQuery:false */
 /*global $:false */
 /*global document */
-(function ($) {
+var CTC = (function (ctc, $) {
     'use strict';
+    // Augmenting shared objects and arrays
+    ctc.modules = ctc.modules || {};
+    console.log('Component: "StorePopup"');
+
     var namespace_pgn = 'pagination',
         btn_pgn = 'cus-popup_pagination-list-btn',
         btn_pgn_num = '.cus-popup_pagination-list-btn:not(:first):not(:last)',
@@ -13,7 +17,6 @@
         next_pgn_btn_link = '.cus-popup_pagination-list-btn-link-next',
         $nextPage,
         $prevPage,
-        methods,
         i,
         /**
          * @description - for checking input value is positive integer
@@ -60,23 +63,21 @@
         },
         /**
          * @description - for setting active button in the pagination
-         * @param collect_paginate {Array.<jQuery>} - collection of pagination elements
+         * @param $popup_paginate {Array.<jQuery>} - collection of pagination elements
          * @param index {Number} - index to define the active button to set
          */
-        setActive = function (collect_paginate, index) {
-            if (!collect_paginate) {
-                throw new Error('collect_paginate must be passed');
+        setActive = function ($popup_paginate, index) {
+            if (!$popup_paginate) {
+                throw new Error('$popup_paginate must be passed');
             }
             if (!checkPositiveInteger(index)) {
                 throw new Error('index must be a positive integer');
             }
-            /*jslint unparam: true*/
-            collect_paginate.each(function (i, elem) {
-                var $btn_pgn_link_num = $(elem).find(btn_pgn_link_num);
+            $popup_paginate.each(function () {
+                var $btn_pgn_link_num = $(this).find(btn_pgn_link_num);
                 $btn_pgn_link_num.removeClass(btn_link_pgn_active);
                 $($btn_pgn_link_num.get(index - 1)).addClass(btn_link_pgn_active);
             });
-            /*jslint unparam: false*/
         },
         /**
          * @description - for showing items for active page and hiding others
@@ -106,6 +107,7 @@
         Index = function () {
             this.index = null;
         };
+
     Index.prototype = {
         /**
          * @description - for getting current index
@@ -119,7 +121,7 @@
          * @param value {Number} - value to increase index how much
          */
         increaseIndex: function (value) {
-            if (value &&  !checkPositiveInteger(value)) {
+            if (value && !checkPositiveInteger(value)) {
                 throw new Error('index must be a positive integer');
             }
             value = value || 1;
@@ -151,156 +153,177 @@
             return this.index;
         }
     };
-    methods = {
-        /**
-         * @description - to set pagination plugin
-         * @param options - options for plugin
-         */
-        init: function (options) {
-            var opts = $.extend({
-                    'stuff_to_paginate': '.cus-popup_store-location-list',
-                    'stuff_pgn_highlight': 'cus-popup_store-location-list-item_highlighted',
-                    'items_on_page': 3
-                }, options),
-                collect_paginate = this,
-                $stuffToPaginate = $(opts.stuff_to_paginate),
-                items_count = getItemsCount($stuffToPaginate),
-                items_on_page = opts.items_on_page,
-                stuff_pgn_highlight = opts.stuff_pgn_highlight,
-                pages_count = Math.ceil(items_count / items_on_page),
-                index = new Index(),
-                $collect_first = $(collect_paginate[0]),
-                data = $collect_first.data(namespace_pgn),
-                $pages;
-            if (items_count < items_on_page) {
-                collect_paginate.hide();
-                return collect_paginate;
-            }
+    /**
+     * @description - to set pagination plugin
+     * @param options - options for plugin
+     */
+    var StorePopup = function StorePopup(options) {
+        var self = this,
+            opts = $.extend(this.defaults, options),
+            $popup_paginate = $(opts.selector),
+            $stuffToPaginate = $(opts.stuff_to_paginate),
+            items_count = getItemsCount($stuffToPaginate),
+            items_on_page = opts.items_on_page,
+            stuff_pgn_highlight = opts.stuff_pgn_highlight,
+            pages_count = Math.ceil(items_count / items_on_page),
+            index = new Index(),
+            $collect_first = $($popup_paginate[0]),
+            data = $collect_first.data(namespace_pgn),
+            $pages;
+        self.$popup_paginate = $popup_paginate;
+        self.constr = StorePopup;
 
-            if (data && data.opts !== JSON.stringify(opts)) {
-                methods.reload.call(collect_paginate, opts);
-                return collect_paginate;
-            }
+        if (items_count < items_on_page) {
+            $popup_paginate.hide();
+            return $popup_paginate;
+        }
+        if (data && data.opts !== JSON.stringify(opts)) {
+            self.reload(opts);
+            return self;
+        }
 
-            if (!data) {
-                $collect_first.data(namespace_pgn, {
-                    collect_paginate: collect_paginate,
-                    $stuffToPaginate: $stuffToPaginate,
-                    items_count: items_count,
-                    pages_count: pages_count,
-                    stuff_pgn_highlight: stuff_pgn_highlight,
-                    index: index,
-                    items_on_page: items_on_page,
-                    opts: JSON.stringify(opts)
+        if (!data) {
+            $collect_first.data(namespace_pgn, {
+                $popup_paginate: $popup_paginate,
+                $stuffToPaginate: $stuffToPaginate,
+                items_count: items_count,
+                pages_count: pages_count,
+                stuff_pgn_highlight: stuff_pgn_highlight,
+                index: index,
+                items_on_page: items_on_page,
+                opts: JSON.stringify(opts)
+            });
+            $popup_paginate.each(function () {
+                var $this = $(this);
+                appendPaginateBtns($this, pages_count);
+
+                $pages = $this.find(btn_pgn_link_num);
+                $nextPage = $this.find(next_pgn_btn_link);
+                $prevPage = $this.find(prev_pgn_btn_link);
+
+                $('.' + btn_link_pgn).bind('click', function (e) {
+                    e.preventDefault();
                 });
-                collect_paginate.each(function () {
-                    var $this = $(this);
-                    appendPaginateBtns($this, pages_count);
 
-                    $pages = $this.find(btn_pgn_link_num);
-                    $nextPage = $this.find(next_pgn_btn_link);
-                    $prevPage = $this.find(prev_pgn_btn_link);
-
-                    $('.' + btn_link_pgn).bind('click', function (e) {
-                        e.preventDefault();
-                    });
-
-                    $pages.bind('click.' + namespace_pgn, function (e) {
-                        methods.setPage.call(collect_paginate, +$(e.currentTarget).text());
-                    });
-
-                    $prevPage.bind('click.' + namespace_pgn, $.proxy(methods.prevPage, collect_paginate));
-                    $nextPage.bind('click.' + namespace_pgn, $.proxy(methods.nextPage, collect_paginate));
+                $pages.bind('click.' + namespace_pgn, function (e) {
+                    self.setPage(+$(e.currentTarget).text());
                 });
-                methods.setPage.call(collect_paginate, 1);
-            }
-            return collect_paginate;
+
+                $prevPage.bind('click.' + namespace_pgn, function () {
+                    self.prevPage();
+                });
+                $nextPage.bind('click.' + namespace_pgn, function () {
+                    self.nextPage();
+                });
+            }).show();
+            self.setPage(1);
+        }
+    };
+
+    StorePopup.prototype = {
+        defaults: {
+            'selector': '.cus-popup_pagination-list',
+            'stuff_to_paginate': '.cus-popup_store-location-list',
+            'stuff_pgn_highlight': 'cus-popup_store-location-list-item_highlighted',
+            'items_on_page': 3
         },
         /**
          * @description - for getting the previous pagination page
          */
-        prevPage: function () {
-            var data = $(this[0]).data(namespace_pgn),
-                index = data.index;
-            if (index.getIndex() === 1) { return this; }
-            index.decreaseIndex();
-            setActive(this, index.getIndex());
-            showPageItems(data);
-            return this;
-        },
+        prevPage: (function () {
+            var data,
+                index;
+            return function () {
+                data = data || $(this.$popup_paginate[0]).data(namespace_pgn);
+                index = index || data.index;
+                if (index.getIndex() === 1) {
+                    return this;
+                }
+                index.decreaseIndex();
+                setActive(this.$popup_paginate, index.getIndex());
+                showPageItems(data);
+                return this;
+            }
+        }()),
         /**
          * @description - for getting the next pagination page
          */
-        nextPage: function () {
-            var data = $(this[0]).data(namespace_pgn),
-                index = data.index;
-            if (index.getIndex() === data.pages_count) { return this; }
-            index.increaseIndex();
-            setActive(this, index.getIndex());
-            showPageItems(data);
-            return this;
-        },
+        nextPage: (function () {
+            var data,
+                index;
+            return function () {
+                data = data || $(this.$popup_paginate[0]).data(namespace_pgn);
+                index = index || data.index;
+                if (index.getIndex() === data.pages_count) {
+                    return this;
+                }
+                index.increaseIndex();
+                setActive(this.$popup_paginate, index.getIndex());
+                showPageItems(data);
+                return this;
+            };
+        }()),
         /**
          * @description - for setting the pagination page
          * @param index_to_set {Number} - index for setting the pagination page by
          */
-        setPage: function (index_to_set) {
-            if (!index_to_set || !checkPositiveInteger(index_to_set)) {
-                throw new Error('index_to_set must be a positive integer');
+        setPage: (function () {
+            var data,
+                index;
+            return function (index_to_set) {
+                data = data || $(this.$popup_paginate[0]).data(namespace_pgn);
+                index = index || data.index;
+                if (!index_to_set || !checkPositiveInteger(index_to_set)) {
+                    throw new Error('index_to_set must be a positive integer');
+                }
+                if (index.getIndex() === index_to_set) {
+                    return this;
+                }
+                index.updateIndex(index_to_set);
+                setActive(this.$popup_paginate, index.getIndex());
+                showPageItems(data);
+                return this;
             }
-            var data = $(this[0]).data(namespace_pgn),
-                index = data.index;
-            if (index.getIndex() === index_to_set) { return this; }
-            index.updateIndex(index_to_set);
-            setActive(this, index.getIndex());
-            showPageItems(data);
-            return this;
-        },
+        }()),
         /**
          * @description - for destroying the pagination plugin
          */
-        destroy: function () {
-            var data = $(this[0]).data(namespace_pgn);
-            this.each(function () {
-                var $this = $(this);
-                $this.find(btn_pgn_num).remove();
-                $nextPage.unbind('.' + namespace_pgn);
-                $prevPage.unbind('.' + namespace_pgn);
-                data.$stuffToPaginate.children()
-                    .removeClass(data.stuff_pgn_highlight)
-                    .show();
+        destroy: (function () {
+            var data;
+            return function () {
+                data = data || $(this.$popup_paginate[0]).data(namespace_pgn);
+                this.$popup_paginate.each(function () {
+                    var $this = $(this);
+                    $this.find(btn_pgn_num).remove();
+                    $nextPage.unbind('.' + namespace_pgn);
+                    $prevPage.unbind('.' + namespace_pgn);
+                    data.$stuffToPaginate.children()
+                        .removeClass(data.stuff_pgn_highlight)
+                        .show();
 
-            });
-            $(this[0]).removeData(namespace_pgn);
-            return this;
-        },
+                }).hide();
+                $(this.$popup_paginate[0]).removeData(namespace_pgn);
+            }
+        }()),
         /**
          * @description - for reloading the pagination plugin
          * @param opts - new options to reload with
          */
         reload: function (opts) {
-            methods.destroy.call(this);
-            methods.init.call(this, opts);
+            this.destroy();
+            new this.constr(opts);
             return this;
         }
     };
-    /**
-     * @description - pagination plugin
-     * @param method {String} - method to call plugin with
-     */
-    $.fn.pagination = function (method) {
-        if (methods[method]) {
-            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-        }
-        if (typeof method === 'object' || !method) {
-            return methods.init.apply(this, arguments);
-        }
-        throw new Error('A method ' + method + 'is not available in jQuery.pagination');
-    };
-}(jQuery));
 
-$('.cus-popup_pagination-list').pagination();
+    ctc.modules.CustomerServiceAccordion = StorePopup;
+
+    return ctc;
+
+}(CTC || {}, jQuery));
+
+var app = new CTC.modules.CustomerServiceAccordion();
+
 $('.cus-popup_main-wrap-hide-btn').on('click', function () {
-    'use strict';
-    $('.cus-popup_pagination-list').pagination('destroy');
+    app.destroy();
 });
